@@ -1,4 +1,4 @@
-# Object Serialization : Code-Along
+# Serialization : Code-Along
 
 ## Learning Goals
 
