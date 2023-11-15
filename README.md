@@ -14,6 +14,7 @@
   computers, or networks.
 - **Deserialization**: the reverse process, converting input data back to
   programmatic data.
+- **Schema**: A class used to validate, serialize, and deserialize data.
 
 ---
 
@@ -48,6 +49,12 @@ $ pipenv shell
 ---
 
 ### Defining a schema
+
+A marshmallow **schema** is used to:
+
+- Validate input data.
+- Deserialize input data to application-level objects.
+- Serialize application-level objects to primitive Python types.
 
 Within the `lib` directory, you'll find the file `serialize.py` that defines a
 simple `Dog` class . We will refer to a class that defines the structure of an
@@ -312,11 +319,17 @@ Serialization is a technique for turning objects into simple, portable formats.
 The `marshmallow` library makes it easy to convert a Python object into a
 dictionary or JSON-encoded string.
 
+- A **schema** defines fields to validate, serialize, and deserialize data.
+- The schema `dump()` method serializes an object to a dictionary.
+- The schema `dumps()` method serializes an object to a JSON-encoded string.
+- A schema can serialize a collection by passing `many=True` as a parameter
+  either during schema instantiation or dumping.
+- We define methods to execute prior to serialization using the `@pre_dump`
+  decorator and after serialization using `@post_dump`.
+
 ---
 
 ### Solution Code
-
-The final version of `lib/serialize.py` is as shown:
 
 ```py
 # lib/serialize.py
@@ -387,6 +400,48 @@ json_array = DogSchema(many=True).dumps(dogs)       # dumps returns JSON-encoded
 pprint(json_array)   # NOTE: String is enclosed in parenthesis to print across multiple lines
 # => ('[{"name": "Snuggles", "breed": "Beagle", "tail_wagging": true}, {"name": '
 # =>  '"Wags", "breed": "Collie", "tail_wagging": false}]')
+```
+
+```py
+# lib/pre_dump.py
+
+from pprint import pprint
+from marshmallow import Schema, fields, pre_dump
+
+# model
+
+class Album():
+    def __init__(self, title, artist, num_sold):
+        self.title = title
+        self.artist = artist
+        self.num_sold = num_sold
+
+# schema
+
+class AlbumSchema(Schema):
+    title = fields.Str()
+    artist = fields.Str()
+    num_sold = fields.Int()
+    big_hit = fields.Bool()
+
+    # compute field prior to serialization
+    @pre_dump()
+    def get_data(self, data, **kwargs):
+        data.big_hit = data.num_sold > 1000000
+        return data
+
+# create model and schema instances
+album_1 = Album("The Wall", "Pink Floyd", 19000000)
+album_2 = Album("Renaissance", "Beyonce", 332000)
+schema = AlbumSchema()
+
+# deserialize model instances
+
+pprint(schema.dumps(album_1))
+# => '{"title": "The Wall", "artist": "Pink Floyd", "num_sold": 19000000, "big_hit": true}'
+
+pprint(schema.dumps(album_2))
+# => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000, "big_hit": 'false}'
 ```
 
 ## Resources
