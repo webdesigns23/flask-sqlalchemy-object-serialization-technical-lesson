@@ -218,6 +218,94 @@ pprint(json_array)   # NOTE: String is enclosed in parenthesis to print across m
 # =>  '"Wags", "breed": "Collie", "tail_wagging": false}]')
 ```
 
+### Pre-dump processing
+
+The marshmallow library provides decorators for registering schema
+pre-processing and post-processing methods. We define a method to execute prior
+to serialization using the `@pre_dump` decorator and after serialization using
+`@post_dump`.
+
+Consider the code in `lib/pre_dump.py`, which defines an `Album` model and
+corresponding schema named `AlbumSchema`. We can easily created and serialize
+model instances as shown:
+
+```py
+from pprint import pprint
+from marshmallow import Schema, fields, pre_dump
+
+# model
+
+class Album():
+    def __init__(self, title, artist, num_sold):
+        self.title = title
+        self.artist = artist
+        self.num_sold = num_sold
+
+# schema
+
+class AlbumSchema(Schema):
+    title = fields.Str(required=True)
+    artist = fields.Str(required=True)
+    num_sold = fields.Int(required=True)
+
+# create model and schema instances
+album_1 = Album("The Wall", "Pink Floyd", 19000000)
+album_2 = Album("Renaissance", "Beyonce", 332000)
+schema = AlbumSchema()
+
+# deserialize model instances
+
+pprint(schema.dumps(album_1))
+# => '{"title": "The Wall", "artist": "Pink Floyd", "num_sold": 19000000}'
+
+pprint(schema.dumps(album_2))
+# => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000}'
+```
+
+Let's supposed we would like to include in the serialized output a boolean named
+`big_hit` that indicates if the album sold more than a million copies. We'll add
+a field named `big_hit` to the schema, along with a method decorated with
+`@pre_dump()` that assigns a value based on the `num_sold` field. The method
+receives the object to be serialized and returns the processed object.
+
+```py
+class AlbumSchema(Schema):
+    title = fields.Str(required=True)
+    artist = fields.Str(required=True)
+    num_sold = fields.Int(required=True)
+    big_hit = fields.Bool(dump_only = True)
+
+    # compute field prior to serialization
+    @pre_dump()
+    def get_data(self, data, **kwargs):
+        data.big_hit = data.num_sold > 1000000
+        return data
+```
+
+Run the code again to confirm the `big_hit` field is included in the serialized
+result. Recall that Python may print a long string across multiple lines by
+enclosing it in parenthesis.
+
+```console
+$ python lib/pre_dump.py
+('{"title": "The Wall", "artist": "Pink Floyd", "num_sold": 19000000, '
+ '"big_hit": true}')
+('{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000, "big_hit": '
+ 'false}')
+```
+
+Let's update the comments to reflect the new output:
+
+```py
+# deserialize model instances
+
+pprint(schema.dumps(album_1))
+# => '{"title": "The Wall", "artist": "Pink Floyd", "num_sold": 19000000, "big_hit": true}'
+
+pprint(schema.dumps(album_2))
+# => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000, "big_hit": 'false}'
+```
+
 ## Conclusion
 
 Serialization is a technique for turning objects into simple, portable formats.
