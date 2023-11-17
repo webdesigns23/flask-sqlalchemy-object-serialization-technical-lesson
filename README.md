@@ -14,23 +14,33 @@
   computers, or networks.
 - **Deserialization**: the reverse process, converting input data back to
   programmatic data.
+- **Validation**: a process for checking the validity of data such as the type,
+  format, or values.
 - **Schema**: A class used to validate, serialize, and deserialize data.
 
 ---
 
 ## Introduction
 
+We often need to convert data from one data structure to another. For example,
+we may want to convert a complex Python object to a dictionary with native
+Python data types as values, or vice versa.
+
 Serialization is a technique for converting data such as a Python object into a
 series of bytes. When a Python object is serialized, we can share it with other
 programs, computers, or networks. Deserialization is the reverse process,
-converting the byte stream back to an object.
-
-There are different formats for data serialization. We will primarily serialize
-a Python object to either a dictionary or a JSON-encoded string.
+converting the byte stream back to an object. Validation is a process of
+checking the validity of data such as the type, format, or values. Validation is
+usually part of deserialization, but could be done during serialization as well.
 
 The `marshmallow` library is a powerful tool for serializing, deserializing, and
-validating data in Python. In this lesson, we'll use learn how to use
-`marshmallow` to serialize a Python object.
+validating data in Python. It is also database and platform agnostic, which
+makes useful in many applications.
+
+In this lesson, we'll use learn how to use `marshmallow` to serialize a Python
+object. While there are different formats for data serialization, we will
+primarily serialize a Python object to either a dictionary or a JSON-encoded
+string.
 
 ---
 
