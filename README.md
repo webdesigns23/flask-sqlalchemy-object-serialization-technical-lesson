@@ -1,48 +1,18 @@
-# Serialization : Code-Along
-
-## Learning Goals
-
-- Use the marshmallow library to convert Python objects to primitive Python data
-  types.
-
----
-
-## Key Vocab
-
-- **Serialization**: a process to convert programmatic data such as a Python
-  object to a sequence of bytes that can be shared with other programs,
-  computers, or networks.
-- **Deserialization**: the reverse process, converting input data back to
-  programmatic data.
-- **Validation**: a process for checking the validity of data such as the type,
-  format, or values.
-- **Schema**: A class used to validate, serialize, and deserialize data.
-
----
+# Technical Lesson: Serialization with Marshmallow
 
 ## Introduction
-
-We often need to convert data from one data structure to another. For example,
-we may want to convert a complex Python object to a dictionary with native
-Python data types as values, or vice versa.
-
-Serialization is a technique for converting data such as a Python object into a
-series of bytes. When a Python object is serialized, we can share it with other
-programs, computers, or networks. Deserialization is the reverse process,
-converting the byte stream back to an object. Validation is a process of
-checking the validity of data such as the type, format, or values. Validation is
-usually part of deserialization, but could be done during serialization as well.
-
-The `marshmallow` library is a powerful tool for serializing, deserializing, and
-validating data in Python. It is also database and platform agnostic, which
-makes useful in many applications.
 
 In this lesson, we'll use learn how to use `marshmallow` to serialize a Python
 object. While there are different formats for data serialization, we will
 primarily serialize a Python object to either a dictionary or a JSON-encoded
 string.
 
----
+## Tools & Resources
+
+- [GitHub Repo](https://github.com/learn-co-curriculum/flask-sqlalchemy-object-serialization-technical-lesson)
+- [marshmallow](https://pypi.org/project/marshmallow/)
+- [marshmallow quickstart](https://marshmallow.readthedocs.io/en/stable/quickstart.html)
+- [pprint module](https://docs.python.org/3/library/pprint.html#module-pprint)
 
 ## Setup
 
@@ -56,15 +26,15 @@ $ pipenv install
 $ pipenv shell
 ```
 
----
+## Instructions
 
-### Defining a schema
+### Task 1: Define the Problem
 
-A marshmallow **schema** is used to:
+### Task 2: Determine the Design
 
-- Validate input data.
-- Deserialize input data to application-level objects.
-- Serialize application-level objects to primitive Python types.
+### Task 3: Develop, Test, and Refine the Code
+
+#### Step 1: Define Schema
 
 Within the `lib` directory, you'll find the file `serialize.py` that defines a
 simple `Dog` class . We will refer to a class that defines the structure of an
@@ -149,7 +119,7 @@ instance. We'll do that using two inherited methods for dumping object state:
 - `dump()` serializes an object to a dictionary
 - `dumps()` serializes an object to a JSON-encoded string
 
-### Serializing/dumping to a dictionary using `dump()`
+#### Step 2: Serializing/dumping to a dictionary using `dump()`
 
 Let's first serialize the `Dog` instance to a dictionary using the `dump()`
 method and pretty-print the result. Add the following to the code:
@@ -170,7 +140,7 @@ $ python lib/serialize.py
 {'breed': 'Beagle', 'name': 'Snuggles', 'tail_wagging': True}
 ```
 
-### Serializing/dumping to JSON using `dumps()`
+#### Step 3: Serializing/dumping to JSON using `dumps()`
 
 We can also serialize to a JSON-encoded string using `dumps()`. Update the code
 to add the following:
@@ -191,7 +161,7 @@ boolean value `true` instead of the Python value `True`.
 '{"name": "Snuggles", "breed": "Beagle", "tail_wagging": true}'
 ```
 
-### Filtering
+#### Step 4: Filtering
 
 We can specify which fields to output by passing either an `only` or an
 `exclude` parameter to the dump methods. Each parameter takes a tuple of strings
@@ -211,7 +181,7 @@ pprint(dog_summary)
 # => '{"name": "Snuggles", "breed": "Beagle"}'
 ```
 
-### Serialize a collection
+#### Step 5: Serialize a collection
 
 A collection can be serialized by instantiating the schema with the parameter
 `many=True`. The `dump()` method returns a list of dictionaries, while the
@@ -235,7 +205,7 @@ pprint(json_array)   # NOTE: String is enclosed in parenthesis to print across m
 # =>  '"Wags", "breed": "Collie", "tail_wagging": false}]')
 ```
 
-### Pre-dump processing
+#### Step 6: Pre-dump processing
 
 The marshmallow library provides decorators for registering schema
 pre-processing and post-processing methods. We define a method to execute prior
@@ -323,23 +293,9 @@ pprint(schema.dumps(album_2))
 # => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000, "big_hit": 'false}'
 ```
 
-## Conclusion
+#### Step 7: Verify your Code
 
-Serialization is a technique for turning objects into simple, portable formats.
-The `marshmallow` library makes it easy to convert a Python object into a
-dictionary or JSON-encoded string.
-
-- A **schema** defines fields to validate, serialize, and deserialize data.
-- The schema `dump()` method serializes an object to a dictionary.
-- The schema `dumps()` method serializes an object to a JSON-encoded string.
-- A schema can serialize a collection by passing `many=True` as a parameter
-  either during schema instantiation or dumping.
-- We define methods to execute prior to serialization using the `@pre_dump`
-  decorator and after serialization using `@post_dump`.
-
----
-
-### Solution Code
+Solution Code: 
 
 ```py
 # lib/serialize.py
@@ -454,8 +410,27 @@ pprint(schema.dumps(album_2))
 # => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000, "big_hit": 'false}'
 ```
 
-## Resources
+#### Step 8: Commit and Push Git History
 
-- [marshmallow](https://pypi.org/project/marshmallow/)
-- [marshmallow quickstart](https://marshmallow.readthedocs.io/en/stable/quickstart.html)
-- [pprint module](https://docs.python.org/3/library/pprint.html#module-pprint)
+Commit and push your final code to GitHub.
+
+```bash
+git add .
+git commit -m "final solution"
+git push
+```
+
+If you used a feature branch, remember to open a PR and merge to main.
+
+### Task 4: Document and Maintain
+
+Best Practice documentation steps:
+* Add comments to the code to explain purpose and logic, clarifying intent and functionality of your code to other developers.
+* Update README text to reflect the functionality of the application following https://makeareadme.com. 
+  * Add screenshot of completed work included in Markdown in README.
+* Delete any stale branches on GitHub
+* Remove unnecessary/commented out code
+* If needed, update git ignore to remove sensitive data
+
+## Considerations
+
