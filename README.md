@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In this lesson, we'll use learn how to use `marshmallow` to serialize a Python
+In this lesson, we'll learn how to use `marshmallow` to serialize a Python
 object. While there are different formats for data serialization, we will
 primarily serialize a Python object to either a dictionary or a JSON-encoded
 string.
