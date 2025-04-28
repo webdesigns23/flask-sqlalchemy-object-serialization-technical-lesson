@@ -170,6 +170,8 @@ instance. We'll do that using two inherited methods for dumping object state:
 - `dump()` serializes an object to a dictionary
 - `dumps()` serializes an object to a JSON-encoded string
 
+Models represent what the object is; schemas define how the object should be serialized.
+
 #### Step 2: Serializing/dumping to a dictionary using `dump()`
 
 Let's first serialize the `Dog` instance to a dictionary using the `dump()`
@@ -256,6 +258,8 @@ pprint(json_array)   # NOTE: String is enclosed in parenthesis to print across m
 # =>  '"Wags", "breed": "Collie", "tail_wagging": false}]')
 ```
 
+Without `many=True`, Marshmallow expects a single object. With `many=True`, it knows to treat the input as a collection.
+
 #### Step 6: Pre-dump processing
 
 The marshmallow library provides decorators for registering schema
@@ -319,6 +323,9 @@ class AlbumSchema(Schema):
         data.big_hit = data.num_sold > 1000000
         return data
 ```
+
+Computed fields like `big_hit` allow you to add dynamic metadata at serialization 
+time, without modifying your original Python model.
 
 Run the code again to confirm the `big_hit` field is included in the serialized
 result. Recall that Python may print a long string across multiple lines by
