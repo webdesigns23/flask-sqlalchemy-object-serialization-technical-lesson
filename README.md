@@ -51,8 +51,8 @@ need to be:
 
 Problem:
 
-Native Python objects like instances of classes cannot be sent directly in 
-APIs, databases, or external systems. Without a structured serialization 
+Native Python objects, like instances of classes, cannot be directly shared through 
+APIs or external systems without serialization. Without a structured serialization 
 process, inconsistencies arise between different parts of the system, leading 
 to bugs, security risks, or broken integrations.
 
