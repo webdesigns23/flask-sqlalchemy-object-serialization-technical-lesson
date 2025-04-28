@@ -268,7 +268,7 @@ to serialization using the `@pre_dump` decorator and after serialization using
 `@post_dump`.
 
 Consider the code in `lib/pre_dump.py`, which defines an `Album` model and
-corresponding schema named `AlbumSchema`. We can easily created and serialize
+corresponding schema named `AlbumSchema`. We can easily create and serialize
 model instances as shown:
 
 ```py
@@ -304,7 +304,7 @@ pprint(schema.dumps(album_2))
 # => '{"title": "Renaissance", "artist": "Beyonce", "num_sold": 332000}'
 ```
 
-Let's supposed we would like to include in the serialized output a boolean named
+Let's suppose we would like to include in the serialized output a boolean named
 `big_hit` that indicates if the album sold more than a million copies. We'll add
 a field named `big_hit` to the schema, along with a method decorated with
 `@pre_dump()` that assigns a value based on the `num_sold` field. The method
@@ -329,7 +329,7 @@ time, without modifying your original Python model.
 
 Run the code again to confirm the `big_hit` field is included in the serialized
 result. Recall that Python may print a long string across multiple lines by
-enclosing it in parenthesis.
+enclosing it in parentheses.
 
 ```console
 $ python lib/pre_dump.py
