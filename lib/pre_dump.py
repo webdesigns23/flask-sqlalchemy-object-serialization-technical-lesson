@@ -14,10 +14,10 @@ class Album():
 # schema 
 
 class AlbumSchema(Schema):
-    title = fields.Str()
-    artist = fields.Str()
+    title = fields.String()
+    artist = fields.String()
     num_sold = fields.Int()
-    big_hit = fields.Bool()
+    big_hit = fields.Boolean()
     
     # compute field prior to serialization
     @pre_dump()

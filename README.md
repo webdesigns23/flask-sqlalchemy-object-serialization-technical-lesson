@@ -150,8 +150,8 @@ class Dog:
 # schema
 
 class DogSchema(Schema):
-    name = fields.Str()
-    breed = fields.Str()
+    name = fields.String()
+    breed = fields.String()
     tail_wagging = fields.Boolean()
 
 # create model and schema instances
@@ -286,8 +286,8 @@ class Album():
 # schema
 
 class AlbumSchema(Schema):
-    title = fields.Str(required=True)
-    artist = fields.Str(required=True)
+    title = fields.String(required=True)
+    artist = fields.String(required=True)
     num_sold = fields.Int(required=True)
 
 # create model and schema instances
@@ -312,10 +312,10 @@ receives the object to be serialized and returns the processed object.
 
 ```py
 class AlbumSchema(Schema):
-    title = fields.Str(required=True)
-    artist = fields.Str(required=True)
+    title = fields.String(required=True)
+    artist = fields.String(required=True)
     num_sold = fields.Int(required=True)
-    big_hit = fields.Bool(dump_only = True)
+    big_hit = fields.Boolean(dump_only = True)
 
     # compute field prior to serialization
     @pre_dump()
@@ -378,8 +378,8 @@ class Dog:
 # schema
 
 class DogSchema(Schema):
-    name = fields.Str()
-    breed = fields.Str()
+    name = fields.String()
+    breed = fields.String()
     tail_wagging = fields.Boolean()
 
 # create schema and model instances
@@ -443,10 +443,10 @@ class Album():
 # schema
 
 class AlbumSchema(Schema):
-    title = fields.Str()
-    artist = fields.Str()
+    title = fields.String()
+    artist = fields.String()
     num_sold = fields.Int()
-    big_hit = fields.Bool()
+    big_hit = fields.Boolean()
 
     # compute field prior to serialization
     @pre_dump()
