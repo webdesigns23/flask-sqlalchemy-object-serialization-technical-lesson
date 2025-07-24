@@ -4,7 +4,6 @@ from pprint import pprint
 from marshmallow import Schema, fields, pre_dump
 
 # model
-
 class Album():
     def __init__(self, title, artist, num_sold):
         self.title = title
@@ -12,13 +11,12 @@ class Album():
         self.num_sold = num_sold
     
 # schema 
-
 class AlbumSchema(Schema):
-    title = fields.String()
-    artist = fields.String()
-    num_sold = fields.Int()
-    big_hit = fields.Boolean()
-    
+    title = fields.String(required=True)
+    artist = fields.String(required=True)
+    num_sold = fields.Int(required=True)
+    big_hit = fields.Boolean(dump_only = True)
+
     # compute field prior to serialization
     @pre_dump()
     def get_data(self, data, **kwargs):
@@ -31,7 +29,6 @@ album_2 = Album("Renaissance", "Beyonce", 332000)
 schema = AlbumSchema() 
 
 # deserialize model instances
-
 pprint(schema.dumps(album_1))
 # => '{"title": "The Wall", "artist": "Pink Floyd", "num_sold": 19000000, "big_hit": true}'
 
